@@ -76,6 +76,24 @@ def compile(postfix):
             newNFA = nfa(initial, accept)
             nfaStack.append(newNFA)
         else:
+            # Create new initial and accept states
+            accept = state()
+            initial = state()
+
+            # Join the initial state and the accept state using an arrow labelled 'c'
+            initial.label = c
+            initial.edge1 = accept
+
+            # Push new NFA to the stack
+            newNFA = nfa(initial, accept)
+            nfaStack.append(newNFA)
+
+    # NFA stack should only have a single NFA on it at this point
+    return nfaStack.pop()
+
+print(compile("ab.cd.|"))
+print(compile("aa.*"))
+
             
 
 
