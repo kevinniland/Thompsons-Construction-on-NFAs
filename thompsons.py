@@ -22,7 +22,13 @@ def compile(postfix):
     nfaStack = []
 
     for c in postfix:
-        
+        if c == '.':
+           
+        elif c == '|':
+          
+        elif c == '*':
+            
+        else:
             
 
 
