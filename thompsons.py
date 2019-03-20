@@ -34,7 +34,28 @@ def compile(postfix):
             newNFA = nfa(nfa1.initial, nfa2.accept)
             nfaStack.append(newNFA)
         elif c == '|':
-          
+          # Pop two NFAs off the stack
+            nfa2 = nfaStack.pop() 
+            nfa1 = nfaStack.pop()
+
+            # Create a new initial state, connect it to initial states
+            # of the two NFAs popped from the stack
+            initial = state()
+            accept = state()
+
+            initial.edge1 = nfa1.initial
+            initial.edge2 = nfa2.initial
+
+            # Create a new accept state, connecting the accept states
+            # of the two NFAs popped from the stack to the new state
+            accept = state()
+
+            nfa1.accept.edge1 = accept
+            nfa2.accept.edge1 = accept
+
+            # Push new NFA to the stack
+            newNFA = nfa(initial, accept)
+            nfaStack.append(newNFA)
         elif c == '*':
             
         else:
