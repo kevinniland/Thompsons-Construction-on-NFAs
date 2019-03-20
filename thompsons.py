@@ -1,6 +1,36 @@
 # Thompson's Construction
 # Kevin Niland
 
+""" Shunting Yard Algorithm for converting infix regular expressions to postfix """
+def shunt(infix):
+    # Curly braces = dictionary
+    specials = {'*': 50, '.': 40, '|': 30}
+
+    postfix = "" # Output
+    stack  = "" # Operator stack
+
+    # Loop through the string one character at a time
+    for c in infix:
+        if c == '(':
+            stack += c
+        elif c == ')':
+            while stack[-1] != '(':
+                postfix, stack = postfix + stack[-1], stack[:-1]
+            stack = stack[:-1]
+        elif c in specials:
+            while stack and specials.get(c, 0) <= specials.get(stack[-1], 0):
+                postfix, stack = postfix + stack[-1], stack[:-1]
+            stack += c
+        else:
+            postfix += c
+
+    while stack:
+        postfix, stack = postfix + stack[-1], stack[:-1]
+            
+    return postfix
+
+# print(shunt("(a.b)|(c*.d)"))
+
 # Represents a state with two arrows, labelled by 'label'
 # Use 'None' for a label representing 'e' arrows
 class state:
