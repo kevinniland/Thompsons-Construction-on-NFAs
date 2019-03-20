@@ -23,7 +23,16 @@ def compile(postfix):
 
     for c in postfix:
         if c == '.':
-           
+           # Pop two NFAs off the stack
+            nfa2 = nfaStack.pop() 
+            nfa1 = nfaStack.pop()
+
+            # Connect first NFA's accept state to the second's initial
+            nfa1.accept.edge1 = nfa2.initial
+
+            # Push new NFA to the stack
+            newNFA = nfa(nfa1.initial, nfa2.accept)
+            nfaStack.append(newNFA)
         elif c == '|':
           
         elif c == '*':
