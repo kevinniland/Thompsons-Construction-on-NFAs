@@ -48,6 +48,7 @@ class nfa:
         self.initial = initial
         self.accept = accept
 
+""" Compiles a postfix regular expression into an NFA """
 def compile(postfix):
     nfaStack = []
 
@@ -121,8 +122,40 @@ def compile(postfix):
     # NFA stack should only have a single NFA on it at this point
     return nfaStack.pop()
 
-print(compile("ab.cd.|"))
-print(compile("aa.*"))
+# print(compile("ab.cd.|"))
+# print(compile("aa.*"))
+
+""" Return the set of states that can be reached from a state following
+    'e' arrows """
+def followArrowE(states):
+    # Create a new set, with each state as it's only member
+    states = set()
+    set.add(state)
+
+    # Check if state has arrows labelled 'e' from it
+    if state.label is None:
+      # If there's an edge1, follow it  
+      states |= followArrowE(state.edge1)
+
+""" Matches string to infix regular expression """
+def match(infix, string):
+    # Shunt and compile the regular expression 
+    postfix = shunt(infix)
+    nfa = compile(postfix)
+
+    # The current set of states and the next set of states
+    currentState = set()
+    nextState = set()
+
+    # Loop through each character in the string
+
+# Test cases
+infixes = ["a.b.c*", "a.(b|d).c*", "(a.b|d))*", "a.(b.b)*.c"]
+strings = ["", "abc", "abbc", "abcc", "abad", "abbbc"]
+
+for i in infixes:
+    for s in strings:
+        print(match(i, s), i, s)
 
             
 
