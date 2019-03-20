@@ -13,8 +13,16 @@ class nfa:
     initial = None
     accept = None
 
-    # 'self' represents current instance of the class -- similar to 'this'
+    # 'self' represents current instance of the class - similar to 'this'
     def __init__(self, initial, accept):
         self.initial = initial
         self.accept = accept
+
+def compile(postfix):
+    nfaStack = []
+
+    for c in postfix:
+        
+            
+
 
