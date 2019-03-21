@@ -5,7 +5,7 @@
 def shunt(infix):
     # Curly braces = dictionary
     specials = {'*': 50, '.': 40, '|': 30}
-
+    
     postfix = "" # Output
     stack  = "" # Operator stack
 
@@ -28,8 +28,8 @@ def shunt(infix):
         postfix, stack = postfix + stack[-1], stack[:-1]
             
     return postfix
-
-# print(shunt("(a.b)|(c*.d)"))
+    
+print(shunt("(a.b)|(c*.d)"))
 
 # Represents a state with two arrows, labelled by 'label'
 # Use 'None' for a label representing 'e' arrows
@@ -122,20 +122,29 @@ def compile(postfix):
     # NFA stack should only have a single NFA on it at this point
     return nfaStack.pop()
 
-# print(compile("ab.cd.|"))
-# print(compile("aa.*"))
+## print(compile("ab.cd.|"))
+## print(compile("aa.*"))
 
 """ Return the set of states that can be reached from a state following
     'e' arrows """
-def followArrowE(states):
+def followArrowE(state):
     # Create a new set, with each state as it's only member
     states = set()
-    set.add(state)
+    states.add(state)
 
     # Check if state has arrows labelled 'e' from it
     if state.label is None:
-      # If there's an edge1, follow it  
-      states |= followArrowE(state.edge1)
+        # Check if edg1 is a state
+        if state.edge1 is not None:
+            # If there's an edge1, follow it  
+            states |= followArrowE(state.edge1)
+        # Check if edg1 is a state
+        if state.edge2 is not None:
+            # If there's an edge2, follow it
+            states |= followArrowE(state.edge2)
+
+      # Return the set of states
+    return states
 
 """ Matches string to infix regular expression """
 def match(infix, string):
@@ -147,16 +156,28 @@ def match(infix, string):
     currentState = set()
     nextState = set()
 
+    # Add the initial state to the current set of states
+    currentState |= followArrowE(nfa.initial)
+
     # Loop through each character in the string
+    for s in string:
+        # Loop through current set of states
+        for c in currentState:
+            # Check if that state is labelled 's'
+            if c.label == s:
+                # Add edg1 state to the next set of states
+                nextState |= followArrowE(c.edge1)
+        # Set currentState to next and clear out nextState
+        currentState = nextState
+        nextState = set()
+
+    # Check if the accept state is in the current set of states
+    return (nfa.accept in currentState)
 
 # Test cases
-infixes = ["a.b.c*", "a.(b|d).c*", "(a.b|d))*", "a.(b.b)*.c"]
+infixes = ["a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c"]
 strings = ["", "abc", "abbc", "abcc", "abad", "abbbc"]
 
 for i in infixes:
     for s in strings:
         print(match(i, s), i, s)
-
-            
-
-
