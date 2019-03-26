@@ -4,8 +4,14 @@
 """ Shunting Yard Algorithm for converting infix regular expressions to postfix """
 def shunt(infix):
     # Curly braces = dictionary
-    specials = {'*': 50, '.': 40, '|': 30}
-    
+    # *, +, and ? are repetition operators. They take precedence over concatenation and alternation operators
+    # * = Zero or more
+    # + = One or more
+    # ? = Zero or one
+    # . = 
+    # | =  
+    specials = {'+': 50, '?': 40, '*': 30, '.': 20, '|': 10}
+
     postfix = "" # Output
     stack  = "" # Operator stack
 
@@ -29,7 +35,7 @@ def shunt(infix):
             
     return postfix
     
-print(shunt("(a.b)|(c*.d)"))
+print(shunt("(a.b)|(c*.d)?(a+b)"))
 
 # Represents a state with two arrows, labelled by 'label'
 # Use 'None' for a label representing 'e' arrows
@@ -53,36 +59,31 @@ def compile(postfix):
     nfaStack = []
 
     for c in postfix:
-        if c == '.':
-           # Pop two NFAs off the stack
-            nfa2 = nfaStack.pop() 
+        if c == '+':
+            # Pop a single NFA from the stack
             nfa1 = nfaStack.pop()
 
-            # Connect first NFA's accept state to the second's initial
-            nfa1.accept.edge1 = nfa2.initial
+            # Make the accept edge 1 and edge 2 of the NFA equal to the initial state of the NFA
+            nfa1.accept.edge1 = nfa1.initial
+            nfa1.accept.edge2 = nfa1.initial
 
             # Push new NFA to the stack
-            newNFA = nfa(nfa1.initial, nfa2.accept)
+            newNFA = nfa1
             nfaStack.append(newNFA)
-        elif c == '|':
-          # Pop two NFAs off the stack
-            nfa2 = nfaStack.pop() 
+        elif c == '?': 
+            # Pop a single NFA from the stack
             nfa1 = nfaStack.pop()
 
-            # Create a new initial state, connect it to initial states
-            # of the two NFAs popped from the stack
+            # Create new initial and accept states
             initial = state()
             accept = state()
 
+            # Make the accept state equal to the the NFA's accept state
+            accept = nfa1.accept
+
+            # Join the new initial state to nfa1's initial state and the new accept state
             initial.edge1 = nfa1.initial
-            initial.edge2 = nfa2.initial
-
-            # Create a new accept state, connecting the accept states
-            # of the two NFAs popped from the stack to the new state
-            accept = state()
-
-            nfa1.accept.edge1 = accept
-            nfa2.accept.edge1 = accept
+            initial.edge2 = nfa1.accept
 
             # Push new NFA to the stack
             newNFA = nfa(initial, accept)
@@ -102,6 +103,40 @@ def compile(postfix):
             # Join the old accept state to the new accept state and nfa1's initial state
             nfa1.accept.edge1 = nfa.initial
             nfa1.accept.edge2 = accept
+
+            # Push new NFA to the stack
+            newNFA = nfa(initial, accept)
+            nfaStack.append(newNFA)
+        elif c == '.':
+           # Pop two NFAs off the stack
+            nfa1 = nfaStack.pop() 
+            nfa2 = nfaStack.pop()
+
+            # Connect first NFA's accept state to the second's initial
+            nfa1.accept.edge1 = nfa2.initial
+
+            # Push new NFA to the stack
+            newNFA = nfa(nfa1.initial, nfa2.accept)
+            nfaStack.append(newNFA)
+        elif c == '|':
+          # Pop two NFAs off the stack
+            nfa1 = nfaStack.pop() 
+            nfa2 = nfaStack.pop()
+
+            # Create a new initial state, connect it to initial states
+            # of the two NFAs popped from the stack
+            initial = state()
+            accept = state()
+
+            initial.edge1 = nfa1.initial
+            initial.edge2 = nfa2.initial
+
+            # Create a new accept state, connecting the accept states
+            # of the two NFAs popped from the stack to the new state
+            accept = state()
+
+            nfa1.accept.edge1 = accept
+            nfa2.accept.edge1 = accept
 
             # Push new NFA to the stack
             newNFA = nfa(initial, accept)
@@ -175,8 +210,8 @@ def match(infix, string):
     return (nfa.accept in currentState)
 
 # Test cases
-infixes = ["a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c"]
-strings = ["", "abc", "abbc", "abcc", "abad", "abbbc"]
+infixes = ["a.b", "a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c", "(a+b)c"]
+strings = ["", "ab", "abc", "abbc", "abcc", "abad", "abbbc", "ac", "bc"]
 
 for i in infixes:
     for s in strings:
