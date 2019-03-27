@@ -1,5 +1,6 @@
 # Thompson's Construction
 # Kevin Niland
+import math
 
 """ Shunting Yard Algorithm for converting infix regular expressions to postfix """
 def shunt(infix):
@@ -35,7 +36,7 @@ def shunt(infix):
             
     return postfix
     
-print(shunt("(a.b)|(c*.d)?(a+b)"))
+# print(shunt("(a.b)|(c*.d)?(a+b)"))
 
 # Represents a state with two arrows, labelled by 'label'
 # Use 'None' for a label representing 'e' arrows
@@ -63,12 +64,16 @@ def compile(postfix):
             # Pop a single NFA from the stack
             nfa1 = nfaStack.pop()
 
+             # Create new initial and accept states
+            initial = state()
+            accept = state()
+
             # Make the accept edge 1 and edge 2 of the NFA equal to the initial state of the NFA
             nfa1.accept.edge1 = nfa1.initial
-            nfa1.accept.edge2 = nfa1.initial
+            nfa1.accept.edge2 = accept
 
             # Push new NFA to the stack
-            newNFA = nfa1
+            newNFA = nfa(initial, accept)
             nfaStack.append(newNFA)
         elif c == '?': 
             # Pop a single NFA from the stack
@@ -78,12 +83,12 @@ def compile(postfix):
             initial = state()
             accept = state()
 
-            # Make the accept state equal to the the NFA's accept state
-            accept = nfa1.accept
-
             # Join the new initial state to nfa1's initial state and the new accept state
             initial.edge1 = nfa1.initial
-            initial.edge2 = nfa1.accept
+            initial.edge2 = accept
+
+            # Make the accept state equal to the the NFA's accept state
+            nfa1.accept.edge1 = accept
 
             # Push new NFA to the stack
             newNFA = nfa(initial, accept)
@@ -177,8 +182,8 @@ def followArrowE(state):
         if state.edge2 is not None:
             # If there's an edge2, follow it
             states |= followArrowE(state.edge2)
-
-      # Return the set of states
+    
+    # Return the set of states
     return states
 
 """ Matches string to infix regular expression """
@@ -210,9 +215,12 @@ def match(infix, string):
     return (nfa.accept in currentState)
 
 # Test cases
-infixes = ["a.b", "a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c", "(a+b)c"]
-strings = ["", "ab", "abc", "abbc", "abcc", "abad", "abbbc", "ac", "bc"]
+#infixes = ["a.b", "a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c", "(a+b)c"]
+#strings = ["", "ab", "abc", "abbc", "abcc", "abad", "abbbc", "ac", "bc"]
 
-for i in infixes:
-    for s in strings:
-        print(match(i, s), i, s)
+# Test cases
+#for i in infixes:
+ #   for s in strings:
+  #      print(match(i, s), i, s)
+
+testString = input("Say hello: ")
