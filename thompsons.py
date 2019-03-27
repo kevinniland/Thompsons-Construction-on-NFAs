@@ -1,6 +1,5 @@
 # Thompson's Construction
 # Kevin Niland
-import math
 
 """ Shunting Yard Algorithm for converting infix regular expressions to postfix """
 def shunt(infix):
