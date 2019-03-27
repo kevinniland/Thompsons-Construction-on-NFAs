@@ -227,4 +227,16 @@ def match(infix, string):
  #   for s in strings:
   #      print(match(i, s), i, s)
 
-testString = input("Say hello: ")
+def userInput():
+    counter = int(input("Define the amount of infixes and strings you wish to enter: "))
+    print(counter)
+
+    infixes = {""}
+
+    for i in range(counter):
+        infix = input("Enter an infix: ")
+        infixes.add(infix)
+
+    print(infixes)
+
+userInput()
