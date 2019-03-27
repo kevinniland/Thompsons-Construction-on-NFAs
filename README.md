@@ -1,7 +1,7 @@
-<h3><b>Student:</b> <i>Kevin Niland</i></h3>
-<h3><b>Student number/email:</b> <i>G00342279</i></h3>
-<h3><b>Module:</b> <i>Graph Theory</i></h3>
-<h3><b>Build version:</b> <i>1.0.0</i></h3>
+<h3><b>Student:</b></h3> <i>Kevin Niland</i>
+<h3><b>Student number/email:</b></h3> <i>G00342279</i>
+<h3><b>Module:</b></h3> <i>Graph Theory</i>
+<h3><b>Build version:</b></h3> <i>1.0.0</i>
 
 <h2>Project Statement</h2>
 You must write a program in the Python programming language that can build a Non-Deterministic Finite Automaton (NFA) from a regular expression,  
