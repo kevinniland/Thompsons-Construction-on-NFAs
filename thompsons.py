@@ -1,6 +1,11 @@
 # Thompson's Construction
 # Kevin Niland
 
+""" References """
+# Videos
+# Shunting Yard Algorithm: https://web.microsoftstream.com/video/cfc9f4a2-d34f-4cde-afba-063797493a90
+# Thompson's Construction: https://web.microsoftstream.com/video/5e2a482a-b1c9-48a3-b183-19eb8362abc9
+
 """ Shunting Yard Algorithm for converting infix regular expressions to postfix """
 def shunt(infix):
     # Curly braces = dictionary
