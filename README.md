@@ -15,7 +15,11 @@ The aim of this project is write a program in Python that can check if a given s
 Python
 
 <h2>Tests</h2>
+Infixes:
+["a.b", "a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c", "(a+b)c"]
 
+Strings:
+["", "ab", "abc", "abbc", "abcc", "abad", "abbbc", "ac", "bc"]
 
 <h2>Screenshots</h2>
 
