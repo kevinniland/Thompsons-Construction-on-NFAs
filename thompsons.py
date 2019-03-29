@@ -15,36 +15,36 @@ def shunt(infix):
     # ? = Zero or one
     # . = 
     # | =  
-    specials = {'+': 50, '?': 40, '*': 30, '.': 20, '|': 10}
+    specials = {'?': 70, '+': 60, '*': 50, '.': 40, '|': 30}
 
-    postfix = "" # Output
-    stack  = "" # Operator stack
+    pofix = ""
+    stack = ""
 
     # Loop through the string one character at a time
     for c in infix:
         if c == '(':
-            stack += c
+            stack = stack + c
         elif c == ')':
             while stack[-1] != '(':
-                postfix, stack = postfix + stack[-1], stack[:-1]
+                pofix, stack = pofix + stack[-1], stack[:-1]
+            # Remove '(' from stack
             stack = stack[:-1]
         elif c in specials:
             while stack and specials.get(c, 0) <= specials.get(stack[-1], 0):
-                postfix, stack = postfix + stack[-1], stack[:-1]
-            stack += c
+                pofix, stack = pofix + stack[-1], stack[:-1]
+            stack = stack + c
         else:
-            postfix += c
+            pofix = pofix + c
 
     while stack:
-        postfix, stack = postfix + stack[-1], stack[:-1]
-            
-    return postfix
-    
-# print(shunt("(a.b)|(c*.d)?(a+b)"))
+        pofix, stack = pofix + stack[-1], stack[:-1]
+        
+    return pofix
 
+""" Thompson's Construction """
 # Represents a state with two arrows, labelled by 'label'
 # Use 'None' for a label representing 'e' arrows
-class state:
+class state: 
     label = None
     edge1 = None
     edge2 = None
@@ -60,39 +60,39 @@ class nfa:
         self.accept = accept
 
 """ Compiles a postfix regular expression into an NFA """
-def compile(postfix):
+def compile(pofix):
     nfaStack = []
 
-    for c in postfix:
-        if c == '+':
-            # Pop a single NFA from the stack
+    for c in pofix:
+        if c == '.':
+            # Pop two NFAs off the stack
+            nfa2 = nfaStack.pop() 
             nfa1 = nfaStack.pop()
 
-             # Create new initial and accept states
-            initial = state()
-            accept = state()
-
-            # Make the accept edge 1 and edge 2 of the NFA equal to the initial state of the NFA
-            nfa1.accept.edge1 = nfa1.initial
-            nfa1.accept.edge2 = accept
+            # Connect first NFA's accept state to the second's initial
+            nfa1.accept.edge1 = nfa2.initial
 
             # Push new NFA to the stack
-            newNFA = nfa(initial, accept)
+            newNFA = nfa(nfa1.initial, nfa2.accept)
             nfaStack.append(newNFA)
-        elif c == '?': 
-            # Pop a single NFA from the stack
+        elif c == '|':
+            # Pop two NFAs off the stack
+            nfa2 = nfaStack.pop() 
             nfa1 = nfaStack.pop()
 
-            # Create new initial and accept states
+            # Create a new initial state, connect it to initial states
+            # of the two NFAs popped from the stack
             initial = state()
+
+            initial.edge1 = nfa1.initial
+            initial.edge2 = nfa2.initial
+
+            # Create a new accept state, connecting the accept states
+            # of the two NFAs popped from the stack to the new state
             accept = state()
 
-            # Join the new initial state to nfa1's initial state and the new accept state
-            initial.edge1 = nfa1.initial
-            initial.edge2 = accept
-
-            # Make the accept state equal to the the NFA's accept state
             nfa1.accept.edge1 = accept
+            nfa2.accept.edge1 = accept
 
             # Push new NFA to the stack
             newNFA = nfa(initial, accept)
@@ -110,42 +110,8 @@ def compile(postfix):
             initial.edge2 = accept
 
             # Join the old accept state to the new accept state and nfa1's initial state
-            nfa1.accept.edge1 = nfa.initial
+            nfa1.accept.edge1 = nfa1.initial
             nfa1.accept.edge2 = accept
-
-            # Push new NFA to the stack
-            newNFA = nfa(initial, accept)
-            nfaStack.append(newNFA)
-        elif c == '.':
-           # Pop two NFAs off the stack
-            nfa1 = nfaStack.pop() 
-            nfa2 = nfaStack.pop()
-
-            # Connect first NFA's accept state to the second's initial
-            nfa1.accept.edge1 = nfa2.initial
-
-            # Push new NFA to the stack
-            newNFA = nfa(nfa1.initial, nfa2.accept)
-            nfaStack.append(newNFA)
-        elif c == '|':
-          # Pop two NFAs off the stack
-            nfa1 = nfaStack.pop() 
-            nfa2 = nfaStack.pop()
-
-            # Create a new initial state, connect it to initial states
-            # of the two NFAs popped from the stack
-            initial = state()
-            accept = state()
-
-            initial.edge1 = nfa1.initial
-            initial.edge2 = nfa2.initial
-
-            # Create a new accept state, connecting the accept states
-            # of the two NFAs popped from the stack to the new state
-            accept = state()
-
-            nfa1.accept.edge1 = accept
-            nfa2.accept.edge1 = accept
 
             # Push new NFA to the stack
             newNFA = nfa(initial, accept)
@@ -156,18 +122,18 @@ def compile(postfix):
             initial = state()
 
             # Join the initial state and the accept state using an arrow labelled 'c'
-            initial.label = c
-            initial.edge1 = accept
+            initial.label = c 
+            initial.edge1 = accept 
 
             # Push new NFA to the stack
             newNFA = nfa(initial, accept)
             nfaStack.append(newNFA)
-
+    
     # NFA stack should only have a single NFA on it at this point
     return nfaStack.pop()
 
-## print(compile("ab.cd.|"))
-## print(compile("aa.*"))
+# print(compile("ab.cd.|"))
+# print(compile("aa.*"))
 
 """ Return the set of states that can be reached from a state following
     'e' arrows """
@@ -178,21 +144,21 @@ def followArrowE(state):
 
     # Check if state has arrows labelled 'e' from it
     if state.label is None:
-        # Check if edg1 is a state
+        # Check if edge1 is a state
         if state.edge1 is not None:
-            # If there's an edge1, follow it  
+            # If there's an edge1, follow it 
             states |= followArrowE(state.edge1)
-        # Check if edg1 is a state
+        # Check if edge2 is a state
         if state.edge2 is not None:
             # If there's an edge2, follow it
             states |= followArrowE(state.edge2)
-    
-    # Return the set of states
+
+    # Return the set of states.
     return states
 
 """ Matches string to infix regular expression """
 def match(infix, string):
-    # Shunt and compile the regular expression 
+    # Shunt and compile the regular expression
     postfix = shunt(infix)
     nfa = compile(postfix)
 
@@ -209,34 +175,41 @@ def match(infix, string):
         for c in currentState:
             # Check if that state is labelled 's'
             if c.label == s:
-                # Add edg1 state to the next set of states
+                # Add edge1 state to the next set of states
                 nextState |= followArrowE(c.edge1)
+
         # Set currentState to next and clear out nextState
         currentState = nextState
         nextState = set()
-
+    
     # Check if the accept state is in the current set of states
-    return (nfa.accept in currentState)
+    return(nfa.accept in currentState)
 
 # Test cases
-#infixes = ["a.b", "a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c", "(a+b)c"]
-#strings = ["", "ab", "abc", "abbc", "abcc", "abad", "abbbc", "ac", "bc"]
+infixes = ["a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c"]
+strings = ["", "abc", "abbc", "abcc", "abad", "abbbc"]
 
 # Test cases
-#for i in infixes:
- #   for s in strings:
-  #      print(match(i, s), i, s)
+for i in infixes:
+    for s in strings:
+       print('Match: ' + str(match(i, s)), "Infix: " + i, "String: " + s)
 
 def userInput():
     counter = int(input("Define the amount of infixes and strings you wish to enter: "))
     print(counter)
 
     infixes = {""}
+    strings = {""}
 
     for i in range(counter):
         infix = input("Enter an infix: ")
         infixes.add(infix)
 
+    for i in range(counter):
+        string = input("Enter a string: ")
+        strings.add(string)
+
     print(infixes)
+    print(strings)
 
 userInput()
