@@ -64,7 +64,59 @@ def compile(pofix):
     nfaStack = []
 
     for c in pofix:
-        if c == '.':
+        if c == '?':
+            # Pop a single NFA from the stack
+            nfa1 = nfaStack.pop()
+
+            # Create new initial and accept states
+            initial = state()
+            accept = state()
+
+            # Join the new initial state to nfa1's initial state and the new accept state
+            initial.edge1 = nfa1.initial
+            initial.edge2 = accept
+
+            # Make the accept state equal to the the NFA's accept state
+            nfa1.accept.edge1 = accept
+
+            # Push new NFA to the stack
+            newNFA = nfa(initial, accept)
+            nfaStack.append(newNFA)
+        elif c == '+':
+            # Pop a single NFA from the stack
+            nfa1 = nfaStack.pop()
+
+            # Create new initial and accept states
+            initial = state()
+            accept = state()
+
+            # Make the accept edge 1 and edge 2 of the NFA equal to the initial state of the NFA
+            nfa1.accept.edge1 = nfa1.initial
+            nfa1.accept.edge2 = accept
+
+            # Push new NFA to the stack
+            newNFA = nfa(initial, accept)
+            nfaStack.append(newNFA)
+        elif c == '*':
+            # Pop a single NFA from the stack
+            nfa1 = nfaStack.pop() 
+
+            # Create new initial and accept states
+            initial = state()
+            accept = state()
+
+            # Join the new initial state to nfa1's initial state and the new accept state
+            initial.edge1 = nfa1.initial
+            initial.edge2 = accept
+
+            # Join the old accept state to the new accept state and nfa1's initial state
+            nfa1.accept.edge1 = nfa1.initial
+            nfa1.accept.edge2 = accept
+
+            # Push new NFA to the stack
+            newNFA = nfa(initial, accept)
+            nfaStack.append(newNFA)
+        elif c == '.':
             # Pop two NFAs off the stack
             nfa2 = nfaStack.pop() 
             nfa1 = nfaStack.pop()
@@ -93,25 +145,6 @@ def compile(pofix):
 
             nfa1.accept.edge1 = accept
             nfa2.accept.edge1 = accept
-
-            # Push new NFA to the stack
-            newNFA = nfa(initial, accept)
-            nfaStack.append(newNFA)
-        elif c == '*':
-            # Pop a single NFA from the stack
-            nfa1 = nfaStack.pop() 
-
-            # Create new initial and accept states
-            initial = state()
-            accept = state()
-
-            # Join the new initial state to nfa1's initial state and the new accept state
-            initial.edge1 = nfa1.initial
-            initial.edge2 = accept
-
-            # Join the old accept state to the new accept state and nfa1's initial state
-            nfa1.accept.edge1 = nfa1.initial
-            nfa1.accept.edge2 = accept
 
             # Push new NFA to the stack
             newNFA = nfa(initial, accept)
