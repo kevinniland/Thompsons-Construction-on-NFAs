@@ -218,31 +218,47 @@ def match(infix, string):
     # Check if the accept state is in the current set of states
     return(nfa.accept in currentState)
 
-# Test cases
-infixes = ["a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c"]
-strings = ["", "abc", "abbc", "abcc", "abad", "abbbc"]
+def printMatch():
+    # Test cases
+    infixes = ["a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c"]
+    strings = ["", "abc", "abbc", "abcc", "abad", "abbbc"]
 
-# Test cases
-for i in infixes:
-    for s in strings:
-       print('Match: ' + str(match(i, s)), "Infix: " + i, "String: " + s)
+    # Test cases
+    for i in infixes:
+        for s in strings:
+            print('Match: ' + str(match(i, s)), "Infix: " + i, "String: " + s)
 
 def userInput():
     counter = int(input("Define the amount of infixes and strings you wish to enter: "))
     print(counter)
 
-    infixes = {""}
-    strings = {""}
+    userInfixes = {""}
+    userStrings = {""}
 
     for i in range(counter):
-        infix = input("Enter an infix: ")
-        infixes.add(infix)
-
+        userInfix = input("Enter an infix: ")
+        userInfixes.add(userInfix)
     for i in range(counter):
-        string = input("Enter a string: ")
-        strings.add(string)
+        userString = input("Enter a string: ")
+        userStrings.add(userString)
 
-    print(infixes)
-    print(strings)
+    print(userInfixes)
+    print(userStrings)
 
-userInput()
+
+def menu():
+    isRunning = True
+
+    while isRunning:
+        userChoice = input("\nEnter '1' to print the view the matching results of the predetermined infixes and strings,\n" +
+                            "Enter '2' to enter in your own infixes and strings,\nEnter '-1' to exit the program: ")
+
+        if userChoice == 1:
+            printMatch()
+        elif userChoice == 2:
+            userInput()
+        elif userChoice == -1:
+            isRunning = False
+            print("Bye")
+
+menu()
