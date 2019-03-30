@@ -14,7 +14,7 @@ def shunt(infix):
     # + = One or more
     # ? = Zero or one
     # . = 
-    # | =  
+    # | =  in
     specials = {'?': 70, '+': 60, '*': 50, '.': 40, '|': 30}
 
     pofix = ""
@@ -217,8 +217,11 @@ def match(infix, string):
     
     # Check if the accept state is in the current set of states
     return(nfa.accept in currentState)
-
+    
 def printMatch():
+    # Open a file for reading and create it if it does not exist
+    file = open("testCases.txt", "w+")
+
     # Test cases
     infixes = ["a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c"]
     strings = ["", "abc", "abbc", "abcc", "abad", "abbbc"]
@@ -226,37 +229,62 @@ def printMatch():
     # Test cases
     for i in infixes:
         for s in strings:
-            print('Match: ' + str(match(i, s)), "Infix: " + i, "String: " + s)
+            print("Match: " + str(match(i, s)), "Infix: " + i, "String: " + s)
+            file.write("{} {} {}".format("Match: %s" % str(match(i, s)), "Infix: %s" % i, "String: %s\n" % s))
+
+    # Close the file when done
+    file.close()
+
+# Takes in the user entered infixes and strings and compares them
+def printUserInputMatch(userInfixes, userStrings):
+    file = open("userInputs.txt", "a+")
+
+    for i in userInfixes:
+        for s in userStrings:
+            print("Match: " + str(match(i, s)), "Infix: " + i, "String: " + s)
+            file.write("{} {} {}".format("Match: %s" % str(match(i, s)), "Infix: %s" % i, "String: %s\n" % s))
+
+    # Close the file when done
+    file.close()
+
+def readFile():
+    print("Not yet implemented")
 
 def userInput():
     counter = int(input("Define the amount of infixes and strings you wish to enter: "))
     print(counter)
 
-    userInfixes = {""}
-    userStrings = {""}
+    userInfixes = []
+    userStrings = []
+
+    printInfixes = set()
+    printStrings = set()
 
     for i in range(counter):
-        userInfix = input("Enter an infix: ")
-        userInfixes.add(userInfix)
+        userEntry = input("Enter an infix: ")
+        userInfixes.append(userEntry)
     for i in range(counter):
-        userString = input("Enter a string: ")
-        userStrings.add(userString)
+        userEntry = input("Enter a string: ")
+        userStrings.append(userEntry)
 
-    print(userInfixes)
-    print(userStrings)
-
+    printUserInputMatch(userInfixes, userStrings)
 
 def menu():
     isRunning = True
 
     while isRunning:
         userChoice = input("\nEnter '1' to print the view the matching results of the predetermined infixes and strings,\n" +
-                            "Enter '2' to enter in your own infixes and strings,\nEnter '-1' to exit the program: ")
+                            "Enter '2' to enter in your own infixes and strings,\n" + "Enter '3' to print outputs to a file,\n"
+                            "Enter '4' to read and compare infixes and strings from a file or,\nEnter '-1' to exit the program: ")
 
         if userChoice == 1:
             printMatch()
         elif userChoice == 2:
             userInput()
+        elif userChoice == 3:
+            print("Not yet")
+        elif userChoice == 4:
+            readFile()
         elif userChoice == -1:
             isRunning = False
             print("Bye")
