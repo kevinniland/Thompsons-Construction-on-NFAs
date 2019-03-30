@@ -22,5 +22,7 @@ Strings:
 ["", "ab", "abc", "abbc", "abcc", "abad", "abbbc", "ac", "bc"]
 
 <h2>Screenshots</h2>
-./screenshots/Capture1.png
+
+    Graph-Theory/screenshots/Capture1.PNG
+      
 
