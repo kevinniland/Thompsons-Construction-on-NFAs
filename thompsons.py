@@ -274,8 +274,8 @@ def menu():
 
     while isRunning:
         userChoice = input("\nEnter '1' to print the view the matching results of the predetermined infixes and strings,\n" +
-                            "Enter '2' to enter in your own infixes and strings,\n" + "Enter '3' to print outputs to a file,\n"
-                            "Enter '4' to read and compare infixes and strings from a file or,\nEnter '-1' to exit the program: ")
+                            "Enter '2' to enter in your own infixes and strings,\n" + 
+                            "Enter '3' to read and compare infixes and strings from a file or,\nEnter '-1' to exit the program: ")
 
         if userChoice == 1:
             printMatch()
@@ -283,8 +283,6 @@ def menu():
             userInput()
         elif userChoice == 3:
             print("Not yet")
-        elif userChoice == 4:
-            readFile()
         elif userChoice == -1:
             isRunning = False
             print("Bye")

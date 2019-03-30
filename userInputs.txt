@@ -1,1 +1,13 @@
+Match: True Infix: a.b String: abMatch: False Infix: a.b String: abbc
+Match: False Infix: a.b String: abcd
+Match: False Infix: a(b.c\d) String: abbc
+Match: False Infix: a(b.c\d) String: abcd
 Match: True Infix: a.b String: ab
+Match: False Infix: a.b String: abccccccccc
+Match: False Infix: a.b String: cb
+Match: True Infix: a.b.c* String: ab
+Match: True Infix: a.b.c* String: abccccccccc
+Match: False Infix: a.b.c* String: cb
+Match: False Infix: a|c.b String: ab
+Match: False Infix: a|c.b String: abccccccccc
+Match: True Infix: a|c.b String: cb
