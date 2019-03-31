@@ -49,7 +49,7 @@ Strings:
 <ul>
     <li>'+' operator</li>
     <li>'?' operator</li>
-    <li>Menu/User Interface</li>
+    <li>Menu/User Interface - <b>Please note that due to a problem with the 'readFile()' function, the program will read in files but the function won't exit - files will be continuosly be read in until user manually exits the operation.</b></li> 
 </ul>
 
 <h2>Research/Additional Information</h2>
