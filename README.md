@@ -27,10 +27,10 @@ There are several functions contained in the program, however the five main func
 
 <h2>Tests</h2>
 Infixes:
-["a.b", "a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c", "(a+b)c"]
+["a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c", "a.b?"]
 
 Strings:
-["", "ab", "abc", "abbc", "abcc", "abad", "abbbc", "ac", "bc"]
+["", "a", "abc", "abbc", "abcc", "abad", "abbbc", "abcd", "abbbb"]
 
 <h2>Extras</h2>
 <ul>
