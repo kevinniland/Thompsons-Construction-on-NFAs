@@ -33,7 +33,13 @@ Strings:
 ["", "ab", "abc", "abbc", "abcc", "abad", "abbbc", "ac", "bc"]
 
 <h2>Extras</h2>
+<ul>
+    <li>'+' operator</li>
+    <li>'?' operator</li>
+    <li>Menu/User Interface</li>
+</ul>
 
 <h2>Research/Additional Information</h2>
+Please refer to the wiki of this repository to view the research conducted in relation to this project.
       
 
