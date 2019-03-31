@@ -1,24 +1,66 @@
 Match: False Infix: a.b.c* String: 
+Match: False Infix: a.b.c* String: a
+Match: True Infix: a.b.c* String: ab
 Match: True Infix: a.b.c* String: abc
 Match: False Infix: a.b.c* String: abbc
 Match: True Infix: a.b.c* String: abcc
 Match: False Infix: a.b.c* String: abad
 Match: False Infix: a.b.c* String: abbbc
+Match: False Infix: a.b.c* String: abcd
+Match: False Infix: a.b.c* String: abbbb
+Match: False Infix: a.b.c* String: ac
 Match: False Infix: a.(b|d).c* String: 
+Match: False Infix: a.(b|d).c* String: a
+Match: True Infix: a.(b|d).c* String: ab
 Match: True Infix: a.(b|d).c* String: abc
 Match: False Infix: a.(b|d).c* String: abbc
 Match: True Infix: a.(b|d).c* String: abcc
 Match: False Infix: a.(b|d).c* String: abad
 Match: False Infix: a.(b|d).c* String: abbbc
+Match: False Infix: a.(b|d).c* String: abcd
+Match: False Infix: a.(b|d).c* String: abbbb
+Match: False Infix: a.(b|d).c* String: ac
 Match: True Infix: (a.(b|d))* String: 
+Match: False Infix: (a.(b|d))* String: a
+Match: True Infix: (a.(b|d))* String: ab
 Match: False Infix: (a.(b|d))* String: abc
 Match: False Infix: (a.(b|d))* String: abbc
 Match: False Infix: (a.(b|d))* String: abcc
 Match: True Infix: (a.(b|d))* String: abad
 Match: False Infix: (a.(b|d))* String: abbbc
+Match: False Infix: (a.(b|d))* String: abcd
+Match: False Infix: (a.(b|d))* String: abbbb
+Match: False Infix: (a.(b|d))* String: ac
 Match: False Infix: a.(b.b)*.c String: 
+Match: False Infix: a.(b.b)*.c String: a
+Match: False Infix: a.(b.b)*.c String: ab
 Match: False Infix: a.(b.b)*.c String: abc
 Match: True Infix: a.(b.b)*.c String: abbc
 Match: False Infix: a.(b.b)*.c String: abcc
 Match: False Infix: a.(b.b)*.c String: abad
 Match: False Infix: a.(b.b)*.c String: abbbc
+Match: False Infix: a.(b.b)*.c String: abcd
+Match: False Infix: a.(b.b)*.c String: abbbb
+Match: True Infix: a.(b.b)*.c String: ac
+Match: False Infix: a.b? String: 
+Match: True Infix: a.b? String: a
+Match: True Infix: a.b? String: ab
+Match: False Infix: a.b? String: abc
+Match: False Infix: a.b? String: abbc
+Match: False Infix: a.b? String: abcc
+Match: False Infix: a.b? String: abad
+Match: False Infix: a.b? String: abbbc
+Match: False Infix: a.b? String: abcd
+Match: False Infix: a.b? String: abbbb
+Match: False Infix: a.b? String: ac
+Match: False Infix: a+b.c String: 
+Match: False Infix: a+b.c String: a
+Match: False Infix: a+b.c String: ab
+Match: False Infix: a+b.c String: abc
+Match: False Infix: a+b.c String: abbc
+Match: False Infix: a+b.c String: abcc
+Match: False Infix: a+b.c String: abad
+Match: False Infix: a+b.c String: abbbc
+Match: False Infix: a+b.c String: abcd
+Match: False Infix: a+b.c String: abbbb
+Match: False Infix: a+b.c String: ac

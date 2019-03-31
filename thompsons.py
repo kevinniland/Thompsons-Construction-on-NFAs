@@ -13,8 +13,8 @@ def shunt(infix):
     # * = Zero or more
     # + = One or more
     # ? = Zero or one
-    # . = 
-    # | =  in
+    # . = Concatenation
+    # | =  Alternation
     specials = {'?': 70, '+': 60, '*': 50, '.': 40, '|': 30}
 
     pofix = ""
@@ -186,7 +186,7 @@ def followArrowE(state):
             # If there's an edge2, follow it
             states |= followArrowE(state.edge2)
 
-    # Return the set of states.
+    # Return the set of states
     return states
 
 """ Matches string to infix regular expression """
@@ -217,14 +217,15 @@ def match(infix, string):
     
     # Check if the accept state is in the current set of states
     return(nfa.accept in currentState)
-    
+
+""" Prints the results of the match function to a file and to the screen """    
 def printMatch():
     # Open a file for reading and create it if it does not exist
     file = open("testCases.txt", "w+")
 
     # Test cases
-    infixes = ["a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c"]
-    strings = ["", "abc", "abbc", "abcc", "abad", "abbbc"]
+    infixes = ["a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c", "a.b?", "a+b.c"]
+    strings = ["", "a", "ab", "abc", "abbc", "abcc", "abad", "abbbc", "abcd", "abbbb", "ac"]
 
     # Test cases
     for i in infixes:
@@ -235,7 +236,7 @@ def printMatch():
     # Close the file when done
     file.close()
 
-# Takes in the user entered infixes and strings and compares them
+""" Takes in the user entered infixes and strings and compares them """
 def printUserInputMatch(userInfixes, userStrings):
     file = open("userInputs.txt", "a+")
 
@@ -250,6 +251,7 @@ def printUserInputMatch(userInfixes, userStrings):
 def readFile():
     print("Not yet implemented")
 
+""" Takes in user's input """
 def userInput():
     counter = int(input("Define the amount of infixes and strings you wish to enter: "))
     print(counter)
@@ -269,12 +271,13 @@ def userInput():
 
     printUserInputMatch(userInfixes, userStrings)
 
+""" Menu interface """
 def menu():
     isRunning = True
 
     while isRunning:
         userChoice = input("\nEnter '1' to print the view the matching results of the predetermined infixes and strings,\n" +
-                            "Enter '2' to enter in your own infixes and strings,\n" + 
+                            "Enter '2' to enter in your own infixes and strings (You must enclose your input with quotation marks),\n" + 
                             "Enter '3' to read and compare infixes and strings from a file or,\nEnter '-1' to exit the program: ")
 
         if userChoice == 1:
