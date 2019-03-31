@@ -222,6 +222,8 @@ def match(infix, string):
 def printMatch():
     # Open a file for reading and create it if it does not exist
     file = open("testCases.txt", "w+")
+    fileInf = open("infixes.txt", "a+")
+    fileStr = open("strings.txt", "a+")
 
     # Test cases
     infixes = ["a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c", "a.b?", "a+b.c"]
@@ -232,24 +234,58 @@ def printMatch():
         for s in strings:
             print("Match: " + str(match(i, s)), "Infix: " + i, "String: " + s)
             file.write("{} {} {}".format("Match: %s" % str(match(i, s)), "Infix: %s" % i, "String: %s\n" % s))
+            fileInf.write("%s\n" % i)
+            fileStr.write("%s\n" % s)
 
     # Close the file when done
     file.close()
+    fileInf.close()
+    fileStr.close()
 
 """ Takes in the user entered infixes and strings and compares them """
 def printUserInputMatch(userInfixes, userStrings):
     file = open("userInputs.txt", "a+")
+    fileInf = open("infixes.txt", "a+")
+    fileStr = open("strings.txt", "a+")
 
     for i in userInfixes:
         for s in userStrings:
             print("Match: " + str(match(i, s)), "Infix: " + i, "String: " + s)
             file.write("{} {} {}".format("Match: %s" % str(match(i, s)), "Infix: %s" % i, "String: %s\n" % s))
+            fileInf.write("%s\n" % i)
+            fileStr.write("%s\n" % s)
 
     # Close the file when done
     file.close()
 
+# Allows user to read in a file and compare the infixes and strings in the file
+# Problem with this function - can read in file successfuully and compare infixes. However function will continously get called
 def readFile():
-    print("Not yet implemented")
+    infixesIn = []
+    stringsIn = []
+
+    fileInf = open("infixes.txt", "r")
+    fileStr = open("strings.txt", "r")
+    fileOut1 = open("testCases.txt", "w+")
+    fileOut2 = open("userInputs.txt", "w+")
+    
+    for fInf in fileInf:
+        infixesIn.append(fInf.strip())
+
+    for fStr in fileStr:
+        stringsIn.append(fStr.strip())
+    
+
+    for i in infixesIn:
+        for s in stringsIn:
+            print("Match: " + str(match(i, s)), "Infix: " + i, "String: " + s)
+            lineOut1 = fileOut1.write("{} {} {}".format("Match: %s" % str(match(i, s)), "Infix: %s" % i, "String: %s\n" % s))
+            lineOut2 = fileOut2.write("{} {} {}".format("Match: %s" % str(match(i, s)), "Infix: %s" % i, "String: %s\n" % s))
+
+    fileInf.close()
+    fileStr.close()
+    fileOut1.close()
+    fileOut2.close()
 
 """ Takes in user's input """
 def userInput():
@@ -285,7 +321,7 @@ def menu():
         elif userChoice == 2:
             userInput()
         elif userChoice == 3:
-            print("Not yet")
+            readFile()
         elif userChoice == -1:
             isRunning = False
             print("Bye")
