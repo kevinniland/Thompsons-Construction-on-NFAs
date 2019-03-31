@@ -26,7 +26,7 @@ There are several functions contained in the program, however the five main func
  </ul>
 
 <h2>How To Use</h2>
-<b>IMPORTANT: In order for the user to enter in their own infix/string, they must surrond their input with quotation marks i.e "Enter an infix: "a.b". Attempting to enter an infix/string <i>without</i> quotation marks will result in an error.</b>
+<b>IMPORTANT: In order for the user to enter in their own infix/string, they must surrond their input with quotation marks i.e 'Enter an infix: "a.b"'. Attempting to enter an infix/string <i>without</i> quotation marks will result in an error.</b>
     
 <br>
 <br>
