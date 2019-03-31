@@ -270,7 +270,7 @@ def readFile():
     fileOut2 = open("userInputs.txt", "w+")
     
     for fInf in fileInf:
-        infixesIn.append(fInf.strip())
+        infixesIn.append(fInf.strip()) # strip() returns a string after removing any leading/trailing whitespaces, tabs (\t), new lines (\n), etc.
 
     for fStr in fileStr:
         stringsIn.append(fStr.strip())
