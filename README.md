@@ -25,6 +25,18 @@ There are several functions contained in the program, however the five main func
     <li>The printMatch function takes in no parameters. In it, a file is opened. A set of infixes and strings is declared. Using a nested if statement, 'True' or 'False' is printed depending on whether the infix and string match. The results of this are printed to the file simultaneously.</li>
  </ul>
 
+<h2>How To Use</h2>
+<b>IMPORTANT: In order for the user to enter in their own infix/string, they must surrond their input with quotation marks i.e "Enter an infix: "a.b". Attempting to enter an infix/string <i>without</i> quotation marks will result in an error.</b>
+    
+<br>
+
+<ol>
+    <li>Download/clone project to a desired location.</li>
+    <li>Navigate to the directory in which the project is located.</li>
+    <li>Assuming everything necessary to run a Python program is installed, type 'python thompsons.py' into the command prompt and press enter.</li>
+    <li>The user will then be greeted with the menu.</li>
+</ol>
+
 <h2>Tests</h2>
 Infixes:
 ["a.b.c*", "a.(b|d).c*", "(a.(b|d))*", "a.(b.b)*.c", "a.b?", "a+b.c"]
